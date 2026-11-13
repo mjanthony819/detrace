@@ -118,6 +118,43 @@ button.primary:hover { background: var(--accent); border-color: var(--accent); }
 
 .foot { padding: 0 20px 20px; color: var(--ink-soft); font-size: 12px; max-width: 1100px; }
 
+/* experiment builder + compare + import panels */
+details.panel summary.panel-title {
+  cursor: pointer; list-style: none; user-select: none;
+}
+details.panel summary.panel-title::after { content: "+"; font-weight: 700; }
+details.panel[open] summary.panel-title::after { content: "-"; }
+details.panel summary.panel-title::-webkit-details-marker { display: none; }
+
+.sched-head { padding-bottom: 0; }
+.sched-row {
+  display: flex; align-items: center; gap: 6px; padding: 4px 10px;
+  font-family: var(--mono); font-size: 12px;
+}
+.sched-row input[type="number"], .sched-row input[type="text"], .sched-row select {
+  font-family: var(--mono); font-size: 12px; padding: 3px 6px;
+  border: var(--line); background: #fff; border-radius: 0; flex: none;
+}
+.sched-at { width: 84px; }
+.sched-node { width: 48px; }
+.sched-side { width: 76px; }
+.sched-args { display: flex; align-items: center; gap: 4px; flex: 1; min-width: 0; color: var(--ink-soft); }
+.sched-del { padding: 2px 8px; }
+.sched-empty { padding: 4px 10px 8px; }
+
+.divergence { padding: 0 10px 10px; font-family: var(--mono); font-size: 12px; }
+.div-side { border: var(--line); margin-top: 6px; }
+.div-side b {
+  display: block; padding: 3px 8px; background: var(--paper-2);
+  text-transform: uppercase; font-size: 10px; letter-spacing: 1px;
+}
+.div-side p { margin: 0; padding: 6px 8px; white-space: pre-wrap; word-break: break-word; }
+
+input[type="number"] {
+  font-family: var(--mono); font-size: 13px; padding: 4px 8px;
+  border: var(--line); background: #fff; color: var(--ink); border-radius: 0;
+}
+
 /* svg bits */
 .node-circle { cursor: pointer; }
 .edge { stroke: var(--ink-soft); stroke-width: 1.5; opacity: 0.35; }
