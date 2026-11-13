@@ -68,7 +68,51 @@
         <button id="btn-verify">verify replay</button>
       </div>
       <div class="verify-out" id="verify-out"></div>
+      <div class="ctl-row buttons">
+        <button id="btn-import">import recording</button>
+        <button id="btn-share">copy share link</button>
+        <input id="import-file" type="file" accept="application/json,.json" hidden>
+      </div>
+      <div class="verify-out" id="import-out"></div>
     </section>
+
+    <details class="panel" id="builder-panel">
+      <summary class="panel-title">experiment builder <span class="hint">design your own fault schedule</span></summary>
+      <div class="ctl-row">
+        <label for="bugmode">bug mode</label>
+        <select id="bugmode">
+          <option value="">none (correct protocol)</option>
+          <option value="early-commit">INJECTED: leader commits without majority</option>
+          <option value="no-log-check">INJECTED: votes without log freshness check</option>
+        </select>
+      </div>
+      <div class="sched-head ctl-row">
+        <span class="hint">fault schedule - actions fire at virtual times, in order</span>
+      </div>
+      <div id="sched-rows"></div>
+      <div class="ctl-row buttons">
+        <button id="sched-add">+ add action</button>
+        <button id="sched-apply" class="primary">apply &amp; restart</button>
+      </div>
+      <div class="verify-out" id="sched-out"></div>
+    </details>
+
+    <details class="panel" id="compare-panel">
+      <summary class="panel-title">compare runs <span class="hint">did a change alter the behavior?</span></summary>
+      <div class="ctl-row">
+        <label for="compare-src">run B</label>
+        <select id="compare-src"></select>
+      </div>
+      <div class="ctl-row">
+        <label for="compare-steps">steps</label>
+        <input id="compare-steps" type="number" min="100" max="100000" step="100" value="2000">
+      </div>
+      <div class="ctl-row buttons">
+        <button id="btn-compare" class="primary">compare with current config</button>
+      </div>
+      <div class="verify-out" id="compare-out"></div>
+      <div class="divergence" id="divergence"></div>
+    </details>
 
     <section class="panel">
       <div class="panel-title">invariant monitors</div>
@@ -98,7 +142,7 @@
 </section>
 
 <footer class="foot">
-  <p><b>Honest scope:</b> Detrace simulates an <i>educational model</i> inspired by Raft - it is not production Raft and not formally verified. Scenarios marked INJECTED BUG deliberately mutate the model so the monitors have something to catch; they are not claims about real Raft. The replay guarantee is narrow and tested: one config (seed + faults + schedule) always reproduces the identical trace and digest.</p>
+  <p><b>Honest scope:</b> Detrace simulates an <i>educational model</i> inspired by Raft - it is not production Raft and not formally verified. Scenarios marked INJECTED BUG deliberately mutate the model so the monitors have something to catch; they are not claims about real Raft. The replay guarantee is narrow and tested: one config (seed + faults + schedule + bug mode) always reproduces the identical trace and digest. Importing a recording replays its recorded config with this engine build and compares digests - a match is replay agreement, not a proof about any other engine or about real distributed systems. Run comparison reports the first trace event where two configs diverge under this engine; it does not prove two configs equivalent.</p>
 </footer>
 
 <script type="module" src="app.js"></script>
