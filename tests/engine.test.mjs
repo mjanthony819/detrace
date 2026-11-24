@@ -21,6 +21,16 @@ test('PRNG is deterministic and seed-sensitive', () => {
   void c;
 });
 
+test('FNV-64 matches the canonical FNV-1a-64 vectors', () => {
+  // Published reference values (also reproducible with a BigInt one-liner):
+  // the previous carry-less multiply produced a different, weaker hash.
+  const vectors = { '': 'cbf29ce484222325', 'a': 'af63dc4c8601ec8c', 'hello world': '779a65e7023cd2e7' };
+  for (const [s, want] of Object.entries(vectors)) {
+    const h = new Fnv64(); h.add(s);
+    assert.equal(h.hex(), want, `FNV-1a-64 of ${JSON.stringify(s)}`);
+  }
+});
+
 test('FNV-64 hash is deterministic', () => {
   const h1 = new Fnv64(); h1.add('hello world');
   const h2 = new Fnv64(); h2.add('hello world');
