@@ -34,8 +34,11 @@ export class Fnv64 {
     for (let i = 0; i < str.length; i++) {
       this.lo ^= str.charCodeAt(i);
       const a = this.lo >>> 0, b = this.hi >>> 0;
+      // (hi:lo) * 0x100000001b3 mod 2^64: lo*P0 carries into hi. The product
+      // a*0x1b3 stays under 2^41, so the carry is exact in double precision.
+      const carry = Math.floor((a * 0x000001b3) / 4294967296);
       this.lo = Math.imul(a, 0x000001b3) >>> 0;
-      this.hi = (Math.imul(a, 0x00000100) + Math.imul(b, 0x000001b3)) >>> 0;
+      this.hi = (Math.imul(a, 0x00000100) + Math.imul(b, 0x000001b3) + carry) >>> 0;
     }
   }
   hex() {
